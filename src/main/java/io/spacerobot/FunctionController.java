@@ -12,14 +12,7 @@ public class FunctionController {
 	@RequestMapping("/function")
 	public Function function(@RequestParam(value="id") int id) {
 		
-		// Run command with id 'id'
-		Runtime rt = Runtime.getRuntime();
-		try {
-			Process pr = rt.exec("touch /tmp/thisfilewascreatedbyjava");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 		return new Function(9001);
 	}
