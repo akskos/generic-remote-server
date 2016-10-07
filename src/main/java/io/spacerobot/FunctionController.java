@@ -21,7 +21,6 @@ public class FunctionController {
 			UserConfiguration config = mapper.readValue(new File("/home/akseli/.config/generic-remote-server/config.json"), UserConfiguration.class);
 			
 			System.out.println("----------------------");
-			System.out.println("Configured port number: " + config.getPort());
 			System.out.println("Configured command1: " + config.getCommand1());
 			System.out.println("Configured command2: " + config.getCommand2());
 			System.out.println("----------------------");

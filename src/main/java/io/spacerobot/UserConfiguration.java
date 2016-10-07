@@ -1,17 +1,8 @@
 package io.spacerobot;
 
 public class UserConfiguration {
-	private int port;
 	private String command1;
 	private String command2;
-	
-	public int getPort() {
-		return port;
-	}
-	
-	public void setPort(int port) {
-		this.port = port;
-	}
 	
 	public String getCommand1() {
 		return command1;
