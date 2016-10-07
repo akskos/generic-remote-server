@@ -24,13 +24,24 @@ public class FunctionController {
 			System.out.println("Configured command1: " + config.getCommand1());
 			System.out.println("Configured command2: " + config.getCommand2());
 			System.out.println("----------------------");
+			
+			// Run the specified command
+			Runtime rt = Runtime.getRuntime();
+			if (id == 1) {
+				rt.exec(config.getCommand1());
+				return new Function(9001);
+			} else if (id == 2) {
+				rt.exec(config.getCommand2());
+				return new Function(9001);
+			} else {
+				return new Function(666);
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
+			return new Function(666);
 		}
-		
-		
-		
-		return new Function(9001);
 	}
 }
