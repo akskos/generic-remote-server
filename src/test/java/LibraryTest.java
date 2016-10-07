@@ -1,4 +1,7 @@
 import org.junit.Test;
+
+import io.spacerobot.Library;
+
 import static org.junit.Assert.*;
 
 /*
