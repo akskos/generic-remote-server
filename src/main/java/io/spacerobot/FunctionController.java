@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @CrossOrigin
 @RestController
@@ -19,21 +20,24 @@ public class FunctionController {
 		
 		// Deserialize json config to java object
 		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(UserConfiguration.class, new UserConfigurationDeserializer());
+		mapper.registerModule(module);
 		try {
 			UserConfiguration config = mapper.readValue(new File("/home/akseli/.config/generic-remote-server/config.json"), UserConfiguration.class);
 			
 			System.out.println("----------------------");
-			System.out.println("Configured command1: " + config.getCommand1());
-			System.out.println("Configured command2: " + config.getCommand2());
+			System.out.println("Configured command1: " + config.getCommand(0));
+			System.out.println("Configured command2: " + config.getCommand(1));
 			System.out.println("----------------------");
 			
 			// Run the specified command
 			Runtime rt = Runtime.getRuntime();
 			if (id == 1) {
-				rt.exec(config.getCommand1());
+				rt.exec(config.getCommand(0));
 				return new Function(9001);
 			} else if (id == 2) {
-				rt.exec(config.getCommand2());
+				rt.exec(config.getCommand(1));
 				return new Function(9001);
 			} else {
 				return new Function(666);
