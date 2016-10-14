@@ -13,4 +13,8 @@ public class UserConfiguration {
 		commands.add(command);
 		return commands.size() - 1;
 	}
+	
+	public int numCommands() {
+		return commands.size();
+	}
 }

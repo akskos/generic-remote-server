@@ -33,11 +33,8 @@ public class FunctionController {
 			
 			// Run the specified command
 			Runtime rt = Runtime.getRuntime();
-			if (id == 1) {
-				rt.exec(config.getCommand(0));
-				return new Function(9001);
-			} else if (id == 2) {
-				rt.exec(config.getCommand(1));
+			if (id > 0 && id <= config.numCommands()) {
+				rt.exec(config.getCommand(id-1));
 				return new Function(9001);
 			} else {
 				return new Function(666);
