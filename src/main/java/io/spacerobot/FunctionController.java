@@ -24,7 +24,29 @@ public class FunctionController {
 		module.addDeserializer(UserConfiguration.class, new UserConfigurationDeserializer());
 		mapper.registerModule(module);
 		try {
-			UserConfiguration config = mapper.readValue(new File("/home/akseli/.config/generic-remote-server/config.json"), UserConfiguration.class);
+			
+			UserConfiguration config = new UserConfiguration();
+			
+			// Detect OS for reading config file
+			String osname = System.getProperty("os.name");
+			if (osname.contains("Linux")) {
+				
+				String homepath = System.getProperty("user.home");
+				String configFileName = homepath + "/.config/generic-remote-server/config.json";
+				File checkingFile = new File(configFileName);
+				if (!checkingFile.exists() || checkingFile.isDirectory()) {
+					System.out.println("Could not find file: " + configFileName);
+				} else {
+					config = mapper.readValue(new File("/home/akseli/.config/generic-remote-server/config.json"), UserConfiguration.class);
+				}
+				
+			} else if (osname.contains("Mac")) {
+				System.out.println("ehh");
+			} else if (osname.contains("Windows")) {
+				System.out.println("ughh..");
+			} else {
+				System.out.println("Couldn't detect os type.");
+			}
 			
 			// Run the specified command
 			Runtime rt = Runtime.getRuntime();
