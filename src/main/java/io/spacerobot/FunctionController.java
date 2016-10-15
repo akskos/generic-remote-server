@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 @RestController
 public class FunctionController {
 	
-	@RequestMapping("/function")
+	@RequestMapping(value="/function", produces="application/json", consumes="text/plain")
 	public Function function(@RequestParam(value="id") int id) {
 		
 		// Deserialize json config to java object
