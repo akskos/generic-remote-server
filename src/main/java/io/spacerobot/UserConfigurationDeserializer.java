@@ -26,11 +26,21 @@ public class UserConfigurationDeserializer extends StdDeserializer<UserConfigura
 		UserConfiguration conf = new UserConfiguration();
 		
 		JsonNode node = p.getCodec().readTree(p);
+		
+		// Commands
 		JsonNode commandArray = node.get("commands");
 		if (commandArray.isArray()) {
 			for (JsonNode c : commandArray) {
 				conf.addCommand(c.asText());
 			}
+		}
+		
+		// Password
+		JsonNode usingPasswordNode = node.get("usingPassword");
+		conf.setUsingPassword(usingPasswordNode.asBoolean());
+		if (conf.usingPassword()) {
+			JsonNode passwordNode = node.get("password");
+			conf.setPassword(passwordNode.asText());
 		}
 		
 		return conf;

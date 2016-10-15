@@ -16,7 +16,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 public class FunctionController {
 	
 	@RequestMapping(value="/function", produces="application/json", consumes="text/plain")
-	public Function function(@RequestParam(value="id") int id) {
+	public Function function(@RequestParam(value="id", required=true) int id,
+							@RequestParam(value="password", required=false) String password) {
 		
 		// Deserialize json config to java object
 		ObjectMapper mapper = new ObjectMapper();
@@ -68,8 +69,15 @@ public class FunctionController {
 			// Run the specified command
 			Runtime rt = Runtime.getRuntime();
 			if (id > 0 && id <= config.numCommands()) {
-				rt.exec(config.getCommand(id-1));
-				return new Function(9001);
+				
+				// Check password and execute
+				if (!config.usingPassword() || config.getPassword().equals(password)) {
+					rt.exec(config.getCommand(id-1));
+					return new Function(9001);
+				} else {
+					return new Function(666);
+				}
+				
 			} else {
 				return new Function(666);
 			}
