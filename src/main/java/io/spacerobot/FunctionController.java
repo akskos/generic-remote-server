@@ -28,25 +28,42 @@ public class FunctionController {
 			UserConfiguration config = new UserConfiguration();
 			
 			// Detect OS for reading config file
+			
 			String osname = System.getProperty("os.name");
+			String configFileName = "";
 			if (osname.contains("Linux")) {
 				
 				String homepath = System.getProperty("user.home");
-				String configFileName = homepath + "/.config/generic-remote-server/config.json";
+				configFileName = homepath + "/.config/generic-remote-server/config.json";
 				File checkingFile = new File(configFileName);
 				if (!checkingFile.exists() || checkingFile.isDirectory()) {
 					System.out.println("Could not find file: " + configFileName);
-				} else {
-					config = mapper.readValue(new File("/home/akseli/.config/generic-remote-server/config.json"), UserConfiguration.class);
 				}
 				
 			} else if (osname.contains("Mac")) {
-				System.out.println("ehh");
+				
+				String homepath = System.getProperty("user.home");
+				configFileName = homepath + "/Library/Application Support/Generic Remote Server/config.json";
+				File checkingFile = new File(configFileName);
+				if (!checkingFile.exists() || checkingFile.isDirectory()) {
+					System.out.println("Could not find file: " + configFileName);
+				}
+				
 			} else if (osname.contains("Windows")) {
-				System.out.println("ughh..");
+				
+				String homepath = System.getProperty("user.home");
+				configFileName = homepath + "/AppData/Local/Generic Remote Server/config.json";
+				File checkingFile = new File(configFileName);
+				if (!checkingFile.exists() || checkingFile.isDirectory()) {
+					System.out.println("Could not find file: " + configFileName);
+				}
+				
 			} else {
 				System.out.println("Couldn't detect os type.");
 			}
+			
+			// Read config file
+			config = mapper.readValue(new File(configFileName), UserConfiguration.class);
 			
 			// Run the specified command
 			Runtime rt = Runtime.getRuntime();
