@@ -9,6 +9,14 @@ public class CommandInfo {
 		this.name = name;
 	}
 	
+	public CommandInfo() {
+		
+	}
+	
+	public CommandInfo(int status) {
+		this.status = status;
+	}
+	
 	public int getStatus() {
 		return status;
 	}
