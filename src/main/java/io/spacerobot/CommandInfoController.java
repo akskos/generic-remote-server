@@ -44,4 +44,23 @@ public class CommandInfoController {
 			return new CommandInfo(666);
 		}
 	}
+	
+	@RequestMapping(value="/numCommands", produces="application/json", consumes="text/plain")
+	public int numCommands(@RequestParam(value="password", required=false) String password) {
+		try {
+			
+			// Fetch config
+			UserConfiguration config = UserConfigurationFactory.getUserConfiguration();
+			
+			// Check password and execute
+			if (!config.usingPassword() || config.getPassword().equals(password)) {
+				return config.getNumCommands();
+			} else {
+				return -1;
+			}
+			
+		} catch (IOException e) {
+			return -1;
+		}
+	}
 }

@@ -39,4 +39,8 @@ public class UserConfiguration {
 	public String getPassword() {
 		return password;
 	}
+	
+	public int getNumCommands() {
+		return commands.size();
+	}
 }
