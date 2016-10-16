@@ -26,7 +26,7 @@ public class CommandInfoController {
 				// Check password and execute
 				if (!config.usingPassword() || config.getPassword().equals(password)) {
 					
-					String commandName = config.getCommandName(id);
+					String commandName = config.getCommandName(id-1);
 					
 					return new CommandInfo(9001, commandName);
 				} else {
