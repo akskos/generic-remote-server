@@ -1,9 +1,9 @@
 package io.spacerobot;
 
-public class Function {
+public class CommandExecution {
 	private final int status;
 	
-	public Function(int status) {
+	public CommandExecution(int status) {
 		this.status = status;
 	}
 	

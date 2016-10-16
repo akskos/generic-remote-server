@@ -13,10 +13,10 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 @CrossOrigin
 @RestController
-public class FunctionController {
+public class CommandExecutionController {
 	
 	@RequestMapping(value="/function", produces="application/json", consumes="text/plain")
-	public Function function(@RequestParam(value="id", required=true) int id,
+	public CommandExecution function(@RequestParam(value="id", required=true) int id,
 							@RequestParam(value="password", required=false) String password) {
 		
 		try {
@@ -31,20 +31,20 @@ public class FunctionController {
 				// Check password and execute
 				if (!config.usingPassword() || config.getPassword().equals(password)) {
 					rt.exec(config.getCommand(id-1));
-					return new Function(9001);
+					return new CommandExecution(9001);
 				} else {
-					return new Function(666);
+					return new CommandExecution(666);
 				}
 				
 			} else {
-				return new Function(666);
+				return new CommandExecution(666);
 			}
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			
-			return new Function(666);
+			return new CommandExecution(666);
 		}
 	}
 }
