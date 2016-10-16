@@ -31,7 +31,9 @@ public class UserConfigurationDeserializer extends StdDeserializer<UserConfigura
 		JsonNode commandArray = node.get("commands");
 		if (commandArray.isArray()) {
 			for (JsonNode c : commandArray) {
-				conf.addCommand(c.asText());
+				String cmdName = c.get("name").asText();
+				String cmd = c.get("cmd").asText();
+				conf.addCommand(new Command(cmdName, cmd));
 			}
 		}
 		
