@@ -3,10 +3,39 @@ package io.spacerobot;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.commons.cli.CommandLine;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 public class UserConfigurationFactory {
+	
+	public static String getConfigPath() {
+		
+		String configPath = "";
+		CommandLine cmd = GenericRemoteServer.cmd;
+		
+		if (cmd.hasOption("c")) {
+			configPath = cmd.getOptionValue("c");
+		} else {
+			String osname = System.getProperty("os.name");
+			if (osname.contains("Linux")) {
+				String homepath = System.getProperty("user.home");
+				configPath = homepath + "/.config/generic-remote-server/config.json";
+			} else if (osname.contains("Mac")) {
+				String homepath = System.getProperty("user.home");
+				configPath = homepath + "/Library/Application Support/Generic Remote Server/config.json";
+			} else if (osname.contains("Windows")) {
+				String homepath = System.getProperty("user.home");
+				configPath = homepath + "/AppData/Local/Generic Remote Server/config.json";
+			} else {
+				System.out.println("Couldn't detect os type.");
+			}
+		}
+		
+		return configPath;
+	}
+	
 	public static UserConfiguration getUserConfiguration() throws IOException {
 		
 		UserConfiguration config = new UserConfiguration();
@@ -17,43 +46,15 @@ public class UserConfigurationFactory {
 		module.addDeserializer(UserConfiguration.class, new UserConfigurationDeserializer());
 		mapper.registerModule(module);
 		
-		// Detect OS for reading config file
-		
-		String osname = System.getProperty("os.name");
-		String configFileName = "";
-		if (osname.contains("Linux")) {
-			
-			String homepath = System.getProperty("user.home");
-			configFileName = homepath + "/.config/generic-remote-server/config.json";
-			File checkingFile = new File(configFileName);
-			if (!checkingFile.exists() || checkingFile.isDirectory()) {
-				System.out.println("Could not find file: " + configFileName);
-			}
-			
-		} else if (osname.contains("Mac")) {
-			
-			String homepath = System.getProperty("user.home");
-			configFileName = homepath + "/Library/Application Support/Generic Remote Server/config.json";
-			File checkingFile = new File(configFileName);
-			if (!checkingFile.exists() || checkingFile.isDirectory()) {
-				System.out.println("Could not find file: " + configFileName);
-			}
-			
-		} else if (osname.contains("Windows")) {
-			
-			String homepath = System.getProperty("user.home");
-			configFileName = homepath + "/AppData/Local/Generic Remote Server/config.json";
-			File checkingFile = new File(configFileName);
-			if (!checkingFile.exists() || checkingFile.isDirectory()) {
-				System.out.println("Could not find file: " + configFileName);
-			}
-			
-		} else {
-			System.out.println("Couldn't detect os type.");
+		// Get config path and check that the file exists
+		String configPath = getConfigPath();
+		File configFile = new File(getConfigPath());
+		if (!configFile.exists() || configFile.isDirectory()) {
+			System.out.println("Could not find file: " + configPath);
 		}
 		
 		// Read config file
-		config = mapper.readValue(new File(configFileName), UserConfiguration.class);
+		config = mapper.readValue(configFile, UserConfiguration.class);
 		
 		return config;
 	}
